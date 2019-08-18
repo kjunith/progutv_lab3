@@ -1,7 +1,7 @@
 <template>
   <Page>
-    <ActionBar android:flat="false" statusBarStyle="dark" title="OverVue: Money"/>
-    <GridLayout rows="*,80">
+    <ActionBar android:flat="true" statusBarStyle="dark" title="OverVue: Money"/>
+    <GridLayout rows="*,96">
       <Content row="0"/>
       <ActionButton row="1" />
     </GridLayout>
@@ -9,8 +9,8 @@
 </template>
 
 <script >
-  import Content from "./Content.vue"
-  import ActionButton from "./ActionButton.vue"
+  import Content from './Content.vue'
+  import ActionButton from './ActionButton.vue'
 
   export default {
     data() {
