@@ -1,13 +1,13 @@
 <template>
   <Page>
     <ActionBar android:flat="true" statusBarStyle="dark" :title="this.accountSelected.name">
-      <NavigationButton text="Accounts" @tap="this.$navigateBack" />
+      <NavigationButton android.systemIcon="ic_menu_back" @tap="$navigateBack"/>
     </ActionBar>
     <StackLayout orientation="vertical">
       <TransactionHeaders />
       <RadListView for="transaction in $store.state.accountTransactions" width="100%">
         <v-template>
-          <WrapLayout @tap="onItemTap(account)">
+          <WrapLayout @tap="onItemTap(transaction)">
             <Label class="index" width="10%" text="#" />
             <Label class="title" width="40%" :text="transaction.title" />
             <Label class="price" width="30%" :text="toCurrency(transaction.price)" />
@@ -31,6 +31,9 @@
       TransactionHeaders
     },
     methods: {
+      onItemTap(transaction) {
+        alert(transaction.title + " Tapped!");
+      },
       fetchTransactionsForAccount() {
         console.log('AccountSelected - Selected Transactions: ' + this.accountSelected.number);
 
@@ -72,7 +75,7 @@
     }
     Label.index {
       background-color: #FAFAFA;
-      font-size: 10;
+      font-size: 12;
       margin-top: 1;
       padding-left: 16;
       padding-top: 16;
@@ -81,7 +84,7 @@
     }
     Label.title {
       background-color: #FAFAFA;
-      font-size: 10;
+      font-size: 12;
       margin-top: 1;
       padding-left: 0;
       padding-top: 16;
@@ -90,7 +93,7 @@
     }
     Label.price {
       background-color: #FAFAFA;
-      font-size: 10;
+      font-size: 12;
       margin-top: 1;
       padding-left: 0;
       padding-top: 16;
@@ -99,7 +102,7 @@
     }
     Label.date {
       background-color: #FAFAFA;
-      font-size: 10;
+      font-size: 12;
       margin-top: 1;
       padding-left: 0;
       padding-top: 16;
