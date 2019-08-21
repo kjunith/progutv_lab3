@@ -1,4 +1,5 @@
 const { join, relative, resolve, sep } = require("path");
+const path = require("path");
 
 const webpack = require("webpack");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
@@ -16,6 +17,7 @@ const hashSalt = Date.now().toString();
 
 module.exports = env => {
     // Add your custom Activities, Services and other android app components here.
+
     const appComponents = [
         "tns-core-modules/ui/frame",
         "tns-core-modules/ui/frame/activity",
