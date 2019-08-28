@@ -1,55 +1,43 @@
 <template>
-  <RadListView for="transaction in $store.state.transactions" width="100%">
+  <RadListView :items="this.$store.state.transactions">
     <v-template>
-      <WrapLayout @tap="goTo(transaction)">
-        <Label class="title" width="50%" :text="transaction.title" />
-        <Label class="price" width="30%" :text="toCurrency(transaction.price)" />
-        <Label class="date" width="20%" :text="toShortDate(transaction.date)" />
+      <WrapLayout @tap="goTo(item)">
+        <Label class="title" width="40%" :text="item.title" />
+        <Label class="price" width="30%" :text="item.price == null ? 0 : toCurrency(item.price)" />
+        <Label class="date" width="30%" :text="toShortDate(item.date)" />
+        <StackLayout class="separator" />
       </WrapLayout>
     </v-template>
   </RadListView>
 </template>
 
 <script>
-  //import TransactionSelected from './TransactionSelected'
+  import EditTransaction from './EditTransaction'
 
   export default {
-    created() {
-      this.fetchTransactions();
-    },
     methods: {
-      goTo(transaction) {
-        alert(transaction.title + " Tapped!");
+      goTo(item) {
+        console.log('EditTransaction');
+        this.$store.state.selectedTransaction = item;
+        this.$navigateTo(EditTransaction);
       },
       toCurrency(priceStr) {
-        return priceStr.toFixed(2) + ' Kr'
+        return parseFloat(priceStr).toFixed(2) + ' Kr'
       },
       toShortDate(dateStr) {
-        let months = ["January", "February", "Mars", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         let date = new Date(Date.parse(dateStr));
-        return date.getDate() + ' ' + months[date.getMonth()];
-      },
-      fetchTransactions() {
-        console.log('Accounts - Fetching All Transactions');
-        fetch('http://192.168.1.51:3000/transactions', { method: 'GET' })
-          .then(response => response.json())
-          .then(result => { this.$store.state.transactions = result })
-          .catch(error => { console.error("Error:", error); })
-      },
-      deleteTransaction(transaction) {
-        if (confirm('Delete ' + transaction.title + '?')) {
-          console.log('Deleting: ' + transaction.title);
-          fetch('http://192.168.1.51:3000/transactions/' + transaction.uuid, { method: 'DELETE' })
-            .then(() => { this.fetchTransactions() })
-        }
+        return `${date.getDate()} ${months[date.getMonth()]}`;
       },
       postTransaction() {
         console.log('Posted Transaction');
-        fetch('http://192.168.1.51:3000/transactions/', { method: 'POST' })
-          .then(() => { this.fetchTransactions() })
-      },
-      goToTransaction(transaction) {
-        this.$router.push({ name: 'EditTransaction', params: { id: transaction.uuid, title: transaction.title, price: transaction.price } })
+        fetch(this.$store.state.localHost + 'transactions/', { method: 'POST' })
+          .then(() => {
+            fetch(this.$store.state.localHost + 'transactions', { method: 'GET' })
+              .then(response => response.json())
+              .then(result => { this.$store.state.transactions = result })
+              .catch(error => { console.error("Transactions - Error:", error); })
+        });
       }
     }
   }
@@ -57,8 +45,8 @@
 
 <style scoped>
   Label.title {
-    background-color: #FAFAFA;
-    font-size: 12;
+    background-color: #F9F9F9;
+    font-size: 14;
     margin-top: 1;
     padding-left: 16;
     padding-top: 16;
@@ -66,21 +54,27 @@
     padding-bottom: 16;
   }
   Label.price {
-    background-color: #FAFAFA;
-    font-size: 12;
+    background-color: #F9F9F9;
+    font-size: 14;
     margin-top: 1;
     padding-left: 0;
     padding-top: 16;
     padding-right: 0;
     padding-bottom: 16;
+    text-align: right;
   }
   Label.date {
-    background-color: #FAFAFA;
-    font-size: 12;
+    background-color: #F9F9F9;
+    font-size: 14;
     margin-top: 1;
     padding-left: 0;
     padding-top: 16;
     padding-right: 16;
     padding-bottom: 16;
+    text-align: right;
+  }
+  .separator {
+    background-color: #FFFFFF;
+    height: 1;
   }
 </style>

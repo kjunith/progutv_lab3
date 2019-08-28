@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page loaded="onPageLoaded">
     <ActionBar android:flat="true" statusBarStyle="dark" title="OverVue: Money" >
       <ActionItem
         ios.systemIcon="4" ios.position="right"
@@ -27,11 +27,24 @@
 </template>
 
 <script >
-  import Accounts from './Accounts.vue'
-  import Transactions from './Transactions.vue'
-  import Add from './Add.vue'
+  import Accounts from './Accounts'
+  import Transactions from './Transactions'
+  import AddNew from './AddNew'
 
   export default {
+    beforeCreate() {
+      console.log('Fetching All Accounts');
+      fetch(this.$store.state.localHost + 'accounts')
+        .then(response => response.json(), { method: 'GET' })
+        .then(result => { this.$store.state.accounts = result })
+        .catch(error => { console.error("Accounts - Error:", error) });
+
+      console.log('Fetching All Transactions');
+      fetch(this.$store.state.localHost + 'transactions', { method: 'GET' })
+        .then(response => response.json())
+        .then(result => { this.$store.state.transactions = result })
+        .catch(error => { console.error("Transactions - Error:", error); });
+    },
     data() {
       return {
         tabTitles: ["Accounts", "Transactions"]
@@ -40,12 +53,12 @@
     components: {
       Accounts,
       Transactions,
-      Add
+      AddNew
     },
     methods: {
       addTapped() {
         console.log('addTapped');
-        this.$navigateTo(Add);
+        this.$showModal(AddNew);
       }
     }
   }

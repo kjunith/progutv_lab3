@@ -18,27 +18,29 @@
 
 <style scoped>
   Label.title {
-    background-color: #F0F0F0;
-    font-size: 12;
+    background-color: #F3F3F3;
+    font-size: 14;
     padding-left: 16;
     padding-top: 16;
     padding-right: 0;
     padding-bottom: 8;
   }
   Label.price {
-    background-color: #F0F0F0;
-    font-size: 12;
+    background-color: #F3F3F3;
+    font-size: 14;
     padding-left: 0;
     padding-top: 16;
     padding-right: 0;
     padding-bottom: 8;
+    text-align: center;
   }
   Label.date {
-    background-color: #F0F0F0;
-    font-size: 12;
+    background-color: #F3F3F3;
+    font-size: 14;
     padding-left: 0;
     padding-top: 16;
     padding-right: 16;
     padding-bottom: 8;
+    text-align: center;
   }
 </style>
